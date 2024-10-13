@@ -1,0 +1,15 @@
+{
+    "$schema": "../umbraco-package-schema.json",
+    "name": "Our.Umbraco.Impersonator",
+    "id": "Our.Umbraco.Impersonator",
+    "version": "3.0.0",
+    "allowTelemetry": true,
+    "extensions": [
+        {
+            "name": "Our.Umbraco.Impersonator.entrypoint",
+            "alias": "Our.Umbraco.Impersonator.EntryPoint",
+            "type": "entryPoint",
+            "js": "/app_plugins/Our.Umbraco.Impersonator/assets.js"
+        }
+    ]
+}

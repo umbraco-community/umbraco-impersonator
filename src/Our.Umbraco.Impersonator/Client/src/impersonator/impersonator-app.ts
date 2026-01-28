@@ -15,7 +15,21 @@ export class ImpersonatorApp extends UmbElementMixin(LitElement) {
   }
   
   impersonateUser() {
-	  impersonate({ query: { id: 'f6fb87cb-1fa2-469d-8e44-40d545c3b0e7' } });
+	  impersonate({ query: { id: 'f6fb87cb-1fa2-469d-8e44-40d545c3b0e7' } }).then(function (response) {
+          if (response.data == "success") {
+              // Clear cached OAuth tokens so the frontend requests new ones for the impersonated user
+              localStorage.removeItem('umb:userAuthTokenResponse');
+              window.location.href = "/umbraco/";
+          } else {
+              /*vm.impersonateButtonState = "error";
+              localizationService
+                  .localize("impersonator_" + response.data)
+                  .then(function (value) {
+                      notificationsService.error(value);
+                  });*/
+              alert("ERROR with impersonation " + response.data);
+          }
+      });
   }
 
   setUserToImpersonate(event: Event) {

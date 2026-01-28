@@ -81,58 +81,78 @@ namespace Our.Umbraco.Impersonator
         }
 
         [HttpPost("EndImpersonation")]
-        public async Task<string> EndImpersonation()
+        public async Task<IActionResult> EndImpersonation()
         {
             if (_backofficeSecurityAccessor.BackOfficeSecurity?.CurrentUser == null)
             {
-                return "notSignedIn";
+                return BadRequest("notSignedIn");
             }
+
             ImpersonatedUserId impersonatingUserId = GetImpersonatingUserId();
             if (impersonatingUserId == null)
             {
-                return "success";
+                return Ok("success");
             }
-            var userById = _userService.GetUserById(impersonatingUserId.ImpersonatingUserId);
-            if (userById != null)
-            {
-                var user = _umbracoMapper.Map<BackOfficeIdentityUser>(userById);
-                HttpContext.Session.Remove(IMPERSONATOR_USER_ID);
-                await _signInManager.SignOutAsync();
-                await _signInManager.SignInAsync(user, false);
 
-                return "success";
+            var userById = _userService.GetUserById(impersonatingUserId.ImpersonatingUserId);
+            if (userById == null)
+            {
+                return NotFound("userNotFound");
             }
-            return "userNotFound";
+
+            var user = _umbracoMapper.Map<BackOfficeIdentityUser>(userById);
+
+            // Remove the impersonation session data
+            HttpContext.Session.Remove(IMPERSONATOR_USER_ID);
+
+            // Sign out the impersonated user
+            await _signInManager.SignOutAsync();
+
+            // Sign in as the original user - this sets the authentication cookie
+            await _signInManager.SignInAsync(user, isPersistent: false);
+
+            // Return success - the frontend will handle the OAuth flow
+            return Ok("success");
         }
 
         [HttpPost("Impersonate")]
-        public async Task<string> Impersonate(string id)
+        public async Task<IActionResult> Impersonate(string id)
         {
             var currentUser = _backofficeSecurityAccessor.BackOfficeSecurity?.CurrentUser;
             if (currentUser == null)
             {
-                return "notSignedIn";
+                return BadRequest("notSignedIn");
             }
-            if (currentUser.AllowedSections.Contains(Constants.Applications.Users))
+            if (!currentUser.AllowedSections.Contains(Constants.Applications.Users))
             {
-                
-                if (Guid.TryParse(id, out Guid userGuid))
-                {
-                    var userById = await _userService.GetAsync(userGuid);
-                    if (userById != null)
-                    {
-                        var user = _umbracoMapper.Map<BackOfficeIdentityUser>(userById);
-                        HttpContext.Session.Remove(IMPERSONATOR_USER_ID);
-                        await _signInManager.SignOutAsync();
-                        await _signInManager.SignInAsync(user, false);
-                        HttpContext.Session.SetString(IMPERSONATOR_USER_ID, JsonSerializer.Serialize(new ImpersonatedUserId(userGuid, currentUser.Id, HttpContext.Session.Id)));
-                        return "success";
-                    }
-                    return "userNotFound";
-                }
-                return "invalidUserId";
+                return Unauthorized("notAdministrator");
             }
-            return "notAdministrator";
+
+            if (!Guid.TryParse(id, out Guid userGuid))
+            {
+                return BadRequest("invalidUserId");
+            }
+
+            var userById = await _userService.GetAsync(userGuid);
+            if (userById == null)
+            {
+                return NotFound("userNotFound");
+            }
+
+            var user = _umbracoMapper.Map<BackOfficeIdentityUser>(userById);
+
+            // Store the impersonation info BEFORE signing in
+            HttpContext.Session.SetString(IMPERSONATOR_USER_ID,
+                JsonSerializer.Serialize(new ImpersonatedUserId(userGuid, currentUser.Id, HttpContext.Session.Id)));
+
+            // Sign out the current user
+            await _signInManager.SignOutAsync();
+
+            // Sign in as the impersonated user - this sets the authentication cookie
+            await _signInManager.SignInAsync(user, isPersistent: true);
+
+            // Return success - the frontend will handle the OAuth flow
+            return Ok("success");
         }
     }
 }

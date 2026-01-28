@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
 	  <StaticWebAssetBasePath>App_Plugins/umbraco-impersonator</StaticWebAssetBasePath>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ContentTargetFolders>.</ContentTargetFolders>
     <Product>Impersonator for Umbraco</Product>
     <PackageId>Our.Umbraco.Impersonator</PackageId>
@@ -19,8 +19,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Umbraco.Cms.Web.Website" Version="14.0.0--preview003" />
-    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="14.0.0--preview003" />
+    <PackageReference Include="Umbraco.Cms.Api.Management" Version="17.1.0" />
+    <PackageReference Include="Umbraco.Cms.Core" Version="17.1.0" />
+    <PackageReference Include="Umbraco.Cms.Infrastructure" Version="17.1.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="17.1.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="17.1.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,21 +1,29 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Umbraco.Cms.Api.Common.Attributes;
+using Umbraco.Cms.Api.Management.Controllers;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Mapping;
 using Umbraco.Cms.Core.Models.ContentEditing;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Web.BackOffice.Controllers;
-using Umbraco.Cms.Web.BackOffice.Security;
 using Umbraco.Cms.Web.Common.Attributes;
+using Umbraco.Cms.Web.Common.Authorization;
+using Umbraco.Cms.Web.Common.Routing;
+using Umbraco.Cms.Web.Common.Security;
 
 namespace Our.Umbraco.Impersonator
 {
-    [PluginController("Impersonator")]
-    public class UserController : UmbracoAuthorizedApiController
+    [ApiController]
+    [BackOfficeRoute("impersonator/api/v{version:apiVersion}")]
+    [Authorize(Policy = AuthorizationPolicies.SectionAccessContent)]
+    [MapToApi("impersonator")]
+    public class ImpersonatorUserController : ManagementApiControllerBase
     {
         private const string IMPERSONATOR_USER_ID = "Impersonator.User.Id";
 
@@ -24,7 +32,7 @@ namespace Our.Umbraco.Impersonator
         private readonly IBackOfficeSecurityAccessor _backofficeSecurityAccessor;
         private readonly IBackOfficeSignInManager _signInManager;
 
-        public UserController(
+        public ImpersonatorUserController(
             IUserService userService,
             IUmbracoMapper umbracoMapper,
             IBackOfficeSecurityAccessor backOfficeSecurityAccessor,
@@ -56,23 +64,23 @@ namespace Our.Umbraco.Impersonator
             return impersonatedUserId;
         }
 
-        [HttpGet]
-        public string GetImpersonatingUserHash()
+        [HttpGet("GetImpersonatingUserHash")]
+        public async Task<string> GetImpersonatingUserHash()
         {
             ImpersonatedUserId impersonatingUserId = GetImpersonatingUserId();
             if (impersonatingUserId == null)
             {
                 return null;
             }
-            var userById = _userService.GetUserById(impersonatingUserId.UserId);
+            var userById = await _userService.GetAsync(impersonatingUserId.UserId);
             if (userById != null)
             {
-                return _umbracoMapper.Map<UserBasic>(userById)?.EmailHash;
+                return "HASH";// _umbracoMapper.Map<UserBasic>(userById)?.EmailHash;
             }
             return null;
         }
 
-        [HttpPost]
+        [HttpPost("EndImpersonation")]
         public async Task<string> EndImpersonation()
         {
             if (_backofficeSecurityAccessor.BackOfficeSecurity?.CurrentUser == null)
@@ -97,8 +105,8 @@ namespace Our.Umbraco.Impersonator
             return "userNotFound";
         }
 
-        [HttpPost]
-        public string Impersonate(int id)
+        [HttpPost("Impersonate")]
+        public async Task<string> Impersonate(string id)
         {
             var currentUser = _backofficeSecurityAccessor.BackOfficeSecurity?.CurrentUser;
             if (currentUser == null)
@@ -107,16 +115,17 @@ namespace Our.Umbraco.Impersonator
             }
             if (currentUser.AllowedSections.Contains(Constants.Applications.Users))
             {
-                if (id > 0)
+                
+                if (Guid.TryParse(id, out Guid userGuid))
                 {
-                    var userById = _userService.GetUserById(id);
+                    var userById = await _userService.GetAsync(userGuid);
                     if (userById != null)
                     {
                         var user = _umbracoMapper.Map<BackOfficeIdentityUser>(userById);
                         HttpContext.Session.Remove(IMPERSONATOR_USER_ID);
-                        _signInManager.SignOutAsync();
-                        _signInManager.SignInAsync(user, false);
-                        HttpContext.Session.SetString(IMPERSONATOR_USER_ID, JsonSerializer.Serialize(new ImpersonatedUserId(id, currentUser.Id, HttpContext.Session.Id)));
+                        await _signInManager.SignOutAsync();
+                        await _signInManager.SignInAsync(user, false);
+                        HttpContext.Session.SetString(IMPERSONATOR_USER_ID, JsonSerializer.Serialize(new ImpersonatedUserId(userGuid, currentUser.Id, HttpContext.Session.Id)));
                         return "success";
                     }
                     return "userNotFound";

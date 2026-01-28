@@ -1,9 +1,10 @@
 import { LitElement, html } from "lit";
 import { customElement } from "lit/decorators.js";
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
+import { impersonate } from '../api';
 
 @customElement('impersonator-app')
-export default class ImpersonatorApp extends UmbElementMixin(LitElement) {
+export class ImpersonatorApp extends UmbElementMixin(LitElement) {
 
 	constructor() {
     super();
@@ -14,7 +15,7 @@ export default class ImpersonatorApp extends UmbElementMixin(LitElement) {
   }
   
   impersonateUser() {
-    // todo
+	  impersonate({ query: { id: 'f6fb87cb-1fa2-469d-8e44-40d545c3b0e7' } });
   }
 
   setUserToImpersonate(event: Event) {
@@ -52,3 +53,5 @@ declare global {
 		'impersonator-app': ImpersonatorApp;
 	}
 }
+
+export default ImpersonatorApp;

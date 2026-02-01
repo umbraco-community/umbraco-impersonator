@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { EndImpersonationData, EndImpersonationErrors, EndImpersonationResponses, GetImpersonatingUserHashData, GetImpersonatingUserHashErrors, GetImpersonatingUserHashResponses, ImpersonateData, ImpersonateErrors, ImpersonateResponses } from './types.gen';
+import type { EndImpersonationData, EndImpersonationErrors, EndImpersonationResponses, GetImpersonatingUserNameData, GetImpersonatingUserNameErrors, GetImpersonatingUserNameResponses, GetUsersData, GetUsersErrors, GetUsersResponses, ImpersonateData, ImpersonateErrors, ImpersonateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -20,26 +20,33 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
 
 export const endImpersonation = <ThrowOnError extends boolean = false>(options?: Options<EndImpersonationData, ThrowOnError>) => {
     return (options?.client ?? client).post<EndImpersonationResponses, EndImpersonationErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
         url: '/umbraco/impersonator/api/v1/EndImpersonation',
         ...options
     });
 };
 
-export const getImpersonatingUserHash = <ThrowOnError extends boolean = false>(options?: Options<GetImpersonatingUserHashData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetImpersonatingUserHashResponses, GetImpersonatingUserHashErrors, ThrowOnError>({
+export const getImpersonatingUserName = <ThrowOnError extends boolean = false>(options?: Options<GetImpersonatingUserNameData, ThrowOnError>) => {
+    return (options?.client ?? client).get<GetImpersonatingUserNameResponses, GetImpersonatingUserNameErrors, ThrowOnError>({
         security: [
             {
                 scheme: 'bearer',
                 type: 'http'
             }
         ],
-        url: '/umbraco/impersonator/api/v1/GetImpersonatingUserHash',
+        url: '/umbraco/impersonator/api/v1/GetImpersonatingUserName',
+        ...options
+    });
+};
+
+export const getUsers = <ThrowOnError extends boolean = false>(options?: Options<GetUsersData, ThrowOnError>) => {
+    return (options?.client ?? client).get<GetUsersResponses, GetUsersErrors, ThrowOnError>({
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/umbraco/impersonator/api/v1/GetUsers',
         ...options
     });
 };

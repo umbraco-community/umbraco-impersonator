@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Our.Umbraco.Impersonator.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -10,6 +12,7 @@ using Umbraco.Cms.Api.Management.Controllers;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Mapping;
 using Umbraco.Cms.Core.Models.ContentEditing;
+using Umbraco.Cms.Core.Models.Membership;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.Common.Attributes;
@@ -21,7 +24,7 @@ namespace Our.Umbraco.Impersonator
 {
     [ApiController]
     [BackOfficeRoute("impersonator/api/v{version:apiVersion}")]
-    [Authorize(Policy = AuthorizationPolicies.SectionAccessContent)]
+    [Authorize(Policy = AuthorizationPolicies.RequireAdminAccess)]
     [MapToApi("impersonator")]
     public class ImpersonatorUserController : ManagementApiControllerBase
     {
@@ -31,18 +34,24 @@ namespace Our.Umbraco.Impersonator
         private readonly IUmbracoMapper _umbracoMapper;
         private readonly IBackOfficeSecurityAccessor _backofficeSecurityAccessor;
         private readonly IBackOfficeSignInManager _signInManager;
+        private readonly IBackOfficeUserManager _backOfficeUserManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public ImpersonatorUserController(
             IUserService userService,
             IUmbracoMapper umbracoMapper,
             IBackOfficeSecurityAccessor backOfficeSecurityAccessor,
-            IBackOfficeSignInManager signInManager
+            IBackOfficeSignInManager signInManager,
+            IBackOfficeUserManager backOfficeUserManager,
+            IHttpContextAccessor httpContextAccessor
             )
         {
             _userService = userService;
             _umbracoMapper = umbracoMapper;
             _backofficeSecurityAccessor = backOfficeSecurityAccessor;
             _signInManager = signInManager;
+            _backOfficeUserManager = backOfficeUserManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -64,8 +73,9 @@ namespace Our.Umbraco.Impersonator
             return impersonatedUserId;
         }
 
-        [HttpGet("GetImpersonatingUserHash")]
-        public async Task<string> GetImpersonatingUserHash()
+        [HttpGet("GetImpersonatingUserName")]
+        [AllowAnonymous]
+        public async Task<string> GetImpersonatingUserName()
         {
             ImpersonatedUserId impersonatingUserId = GetImpersonatingUserId();
             if (impersonatingUserId == null)
@@ -75,18 +85,35 @@ namespace Our.Umbraco.Impersonator
             var userById = await _userService.GetAsync(impersonatingUserId.UserId);
             if (userById != null)
             {
-                return "HASH";// _umbracoMapper.Map<UserBasic>(userById)?.EmailHash;
+                return userById.Name;
             }
             return null;
         }
 
+        [HttpGet("GetUsers")]
+        public async Task<IEnumerable<SimpleUserModel>> GetUsers()
+        {
+            Guid currentUserKey = CurrentUserKey(_backofficeSecurityAccessor);
+            var allUsers = await _userService.GetAllAsync(currentUserKey, 0, Int32.MaxValue);
+            return allUsers.Result?.Items.Where(a => a.Key != currentUserKey).Select(a => new SimpleUserModel()
+            {
+                Key = a.Key,
+                Name = a.Name
+            });
+        }
+
         [HttpPost("EndImpersonation")]
+        [AllowAnonymous]
         public async Task<IActionResult> EndImpersonation()
         {
-            if (_backofficeSecurityAccessor.BackOfficeSecurity?.CurrentUser == null)
+            /*var currentUser = await _backOfficeUserManager.GetUserAsync(_httpContextAccessor.HttpContext?.User);
+
+
+            if (currentUser == null)
             {
+                var testuser = await _backOfficeUserManager.GetUserAsync(User);
                 return BadRequest("notSignedIn");
-            }
+            }*/
 
             ImpersonatedUserId impersonatingUserId = GetImpersonatingUserId();
             if (impersonatingUserId == null)

@@ -12,6 +12,11 @@ export type NotificationHeaderModel = {
     type: EventMessageTypeModel;
 };
 
+export type SimpleUserModel = {
+    key: string;
+    name?: string | null;
+};
+
 export type EndImpersonationData = {
     body?: never;
     path?: never;
@@ -20,10 +25,6 @@ export type EndImpersonationData = {
 };
 
 export type EndImpersonationErrors = {
-    /**
-     * The resource is protected and requires an authentication token
-     */
-    401: unknown;
     /**
      * The authenticated user does not have access to this resource
      */
@@ -34,19 +35,17 @@ export type EndImpersonationResponses = {
     /**
      * OK
      */
-    200: string;
+    200: unknown;
 };
 
-export type EndImpersonationResponse = EndImpersonationResponses[keyof EndImpersonationResponses];
-
-export type GetImpersonatingUserHashData = {
+export type GetImpersonatingUserNameData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/umbraco/impersonator/api/v1/GetImpersonatingUserHash';
+    url: '/umbraco/impersonator/api/v1/GetImpersonatingUserName';
 };
 
-export type GetImpersonatingUserHashErrors = {
+export type GetImpersonatingUserNameErrors = {
     /**
      * The resource is protected and requires an authentication token
      */
@@ -57,14 +56,41 @@ export type GetImpersonatingUserHashErrors = {
     403: unknown;
 };
 
-export type GetImpersonatingUserHashResponses = {
+export type GetImpersonatingUserNameResponses = {
     /**
      * OK
      */
     200: string;
 };
 
-export type GetImpersonatingUserHashResponse = GetImpersonatingUserHashResponses[keyof GetImpersonatingUserHashResponses];
+export type GetImpersonatingUserNameResponse = GetImpersonatingUserNameResponses[keyof GetImpersonatingUserNameResponses];
+
+export type GetUsersData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/umbraco/impersonator/api/v1/GetUsers';
+};
+
+export type GetUsersErrors = {
+    /**
+     * The resource is protected and requires an authentication token
+     */
+    401: unknown;
+    /**
+     * The authenticated user does not have access to this resource
+     */
+    403: unknown;
+};
+
+export type GetUsersResponses = {
+    /**
+     * OK
+     */
+    200: Array<SimpleUserModel>;
+};
+
+export type GetUsersResponse = GetUsersResponses[keyof GetUsersResponses];
 
 export type ImpersonateData = {
     body?: never;
@@ -90,7 +116,5 @@ export type ImpersonateResponses = {
     /**
      * OK
      */
-    200: string;
+    200: unknown;
 };
-
-export type ImpersonateResponse = ImpersonateResponses[keyof ImpersonateResponses];

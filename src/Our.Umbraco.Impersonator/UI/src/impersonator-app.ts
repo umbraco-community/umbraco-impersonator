@@ -37,11 +37,16 @@ export default class ImpersonatorApp extends UmbElementMixin(LitElement) {
 		` :
       html`
 			<uui-box headline="Impersonator">
-        <select class="umb-dropdown flx-g1 mb0" @change=${this.setUserToImpersonate}>
-          <option>todo: get the users</option>
-		  <option label="Tester" value="f6fb87cb-1fa2-469d-8e44-40d545c3b0e7">Tester</option>
-        </select>
-				<uui-button look="primary" label="Impersonate" @click=${this.impersonateUser}></uui-button>
+			
+				<p class="flex">
+
+					<select class="umb-dropdown flx-g1 mb0" @change=${this.setUserToImpersonate}>
+					  <option>todo: get the users</option>
+					  <option label="Tester" value="f6fb87cb-1fa2-469d-8e44-40d545c3b0e7">Tester</option>
+					</select>
+
+					<uui-button look="primary" label="Impersonate" @click=${this.impersonateUser}></uui-button>
+				</p>
 			</uui-box>
       `;
 	}

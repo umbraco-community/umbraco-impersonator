@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
 import { customElement } from "lit/decorators.js";
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import { impersonate, endImpersonation, getUsers, SimpleUserModel, getImpersonatingUserName } from '../api';
+import { impersonate, endImpersonation, getUsers, getImpersonatingUserName } from '../api';
 import { css, state } from "@umbraco-cms/backoffice/external/lit";
 
 @customElement('impersonator-app')

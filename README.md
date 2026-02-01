@@ -1,7 +1,7 @@
 # Impersonator
 
 [![NuGet release](https://img.shields.io/nuget/v/Our.Umbraco.Impersonator.svg)](https://www.nuget.org/packages/Our.Umbraco.Impersonator)
-[![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.com/packages/website-utilities/impersonator/)
+[![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://marketplace.umbraco.com/package/our.umbraco.impersonator)
 
 Impersonator for Umbraco 10+ lets administrators impersonate other users.
 

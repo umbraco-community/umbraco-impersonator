@@ -602,7 +602,7 @@ let $ = class extends pt(T) {
     It().then(function(t) {
       t.data ? (r.isImpersonating = !0, r.impersonatingUserName = t.data, r.show = !0, r.isLoading = !1) : Mt().then(function(e) {
         var s;
-        console.log("got some data", e), r.isLoading = !1, e.response.ok ? (r.userOptions = ((s = e.data) == null ? void 0 : s.map((i) => ({
+        r.isLoading = !1, e.response.ok ? (r.userOptions = ((s = e.data) == null ? void 0 : s.map((i) => ({
           value: i.key,
           name: i.name ?? "Unknown"
         }))) ?? [], r.show = !0) : r.isError = !0;
@@ -687,4 +687,4 @@ export {
   $ as ImpersonatorApp,
   Vt as default
 };
-//# sourceMappingURL=impersonator-app-NoLMn81o.js.map
+//# sourceMappingURL=impersonator-app-CVvnv8an.js.map

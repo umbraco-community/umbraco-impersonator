@@ -7,7 +7,6 @@ import { client } from "../api/client.gen.js";
 
 // load up the manifests here
 export const onInit: UmbEntryPointOnInit = (_host, _extensionRegistry) => {
-  console.log("Hello from my extension 🎉");
   // Will use only to add in Open API config with generated TS OpenAPI HTTPS Client
   // Do the OAuth token handshake stuff
   _host.consumeContext(UMB_AUTH_CONTEXT, async (authContext) => {
@@ -23,5 +22,4 @@ export const onInit: UmbEntryPointOnInit = (_host, _extensionRegistry) => {
 };
 
 export const onUnload: UmbEntryPointOnUnload = (_host, _extensionRegistry) => {
-  console.log("Goodbye from my extension 👋");
 };

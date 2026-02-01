@@ -63,7 +63,6 @@ export class ImpersonatorApp extends UmbElementMixin(LitElement) {
             } else {
                 // Otherwise we could be in a position to impersonate...
                 getUsers().then(function (data) {
-                    console.log("got some data", data);
                     t.isLoading = false;
                     if (!data.response.ok) {
                         // Here we don't have permissions (or internal error)

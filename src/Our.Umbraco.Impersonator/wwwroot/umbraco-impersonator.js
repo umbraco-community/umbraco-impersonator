@@ -1,25 +1,25 @@
-const a = [
+const t = [
   {
     type: "userProfileApp",
     alias: "impersonator",
     name: "Impersonator",
-    js: () => import("./impersonator-app-NoLMn81o.js"),
+    js: () => import("./impersonator-app-CVvnv8an.js"),
     weight: -1,
     meta: {
       label: "Impersonator",
       pathname: "impersonator"
     }
   }
-], t = [
+], o = [
   {
-    name: "Your Package Name Entrypoint",
-    alias: "YourPackageName.Entrypoint",
+    name: "Impersonator Entrypoint",
+    alias: "Impersonator.Entrypoint",
     type: "backofficeEntryPoint",
-    js: () => import("./entrypoint-BiAltGAM.js")
+    js: () => import("./entrypoint-CsNspbZf.js")
   }
 ], e = [
-  ...a,
-  ...t
+  ...t,
+  ...o
 ];
 export {
   e as manifests

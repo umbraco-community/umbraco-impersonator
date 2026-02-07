@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Our.Umbraco.Impersonator/Our.Umbraco.Impersonator.csproj" />
+  <Project Path="TestSite/TestSite.csproj" />
+</Solution>

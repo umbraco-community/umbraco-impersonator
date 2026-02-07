@@ -1,13 +1,15 @@
-﻿namespace Our.Umbraco.Impersonator
+﻿using System;
+
+namespace Our.Umbraco.Impersonator
 {
     public class ImpersonatedUserId
     {
-        public int UserId { get; }
+        public Guid UserId { get; }
         public int ImpersonatingUserId { get; }
 
         public string SessionId { get; }
 
-        public ImpersonatedUserId(int userId, int impersonatingUserId, string sessionId)
+        public ImpersonatedUserId(Guid userId, int impersonatingUserId, string sessionId)
         {
             UserId = userId;
             SessionId = sessionId;

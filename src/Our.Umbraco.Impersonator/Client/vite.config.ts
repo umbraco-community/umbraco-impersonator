@@ -3,13 +3,15 @@ import { defineConfig } from "vite";
 export default defineConfig({
   build: {
     lib: {
-      entry: "src/impersonator-app.ts", // your web component source file
+      entry: "src/bundle.manifests.ts", // Bundle registers one or more manifests
       formats: ["es"],
+          fileName: "umbraco-impersonator",
     },
     outDir: "../wwwroot", // your web component will be saved in this location
+    emptyOutDir: true,
     sourcemap: true,
     rollupOptions: {
       external: [/^@umbraco/],
     },
-  },
+  }
 });

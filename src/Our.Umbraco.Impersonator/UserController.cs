@@ -106,15 +106,6 @@ namespace Our.Umbraco.Impersonator
         [AllowAnonymous]
         public async Task<IActionResult> EndImpersonation()
         {
-            /*var currentUser = await _backOfficeUserManager.GetUserAsync(_httpContextAccessor.HttpContext?.User);
-
-
-            if (currentUser == null)
-            {
-                var testuser = await _backOfficeUserManager.GetUserAsync(User);
-                return BadRequest("notSignedIn");
-            }*/
-
             ImpersonatedUserId impersonatingUserId = GetImpersonatingUserId();
             if (impersonatingUserId == null)
             {
@@ -143,7 +134,7 @@ namespace Our.Umbraco.Impersonator
         }
 
         [HttpPost("Impersonate")]
-        public async Task<IActionResult> Impersonate(string id)
+        public async Task<IActionResult> Impersonate(Guid id)
         {
             var currentUser = _backofficeSecurityAccessor.BackOfficeSecurity?.CurrentUser;
             if (currentUser == null)
@@ -155,12 +146,7 @@ namespace Our.Umbraco.Impersonator
                 return Unauthorized("notAdministrator");
             }
 
-            if (!Guid.TryParse(id, out Guid userGuid))
-            {
-                return BadRequest("invalidUserId");
-            }
-
-            var userById = await _userService.GetAsync(userGuid);
+            var userById = await _userService.GetAsync(id);
             if (userById == null)
             {
                 return NotFound("userNotFound");
@@ -170,7 +156,7 @@ namespace Our.Umbraco.Impersonator
 
             // Store the impersonation info BEFORE signing in
             HttpContext.Session.SetString(IMPERSONATOR_USER_ID,
-                JsonSerializer.Serialize(new ImpersonatedUserId(userGuid, currentUser.Id, HttpContext.Session.Id)));
+                JsonSerializer.Serialize(new ImpersonatedUserId(id, currentUser.Id, HttpContext.Session.Id)));
 
             // Sign out the current user
             await _signInManager.SignOutAsync();

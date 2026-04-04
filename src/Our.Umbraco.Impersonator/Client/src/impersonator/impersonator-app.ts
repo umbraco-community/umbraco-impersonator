@@ -90,11 +90,23 @@ export class ImpersonatorApp extends UmbElementMixin(LitElement) {
     triggerLoginAuthFlow() {
         // This stores the auth of the current user so get shot
         localStorage.removeItem('umb:userAuthTokenResponse');
+        var sessionId = localStorage.getItem('appauth_current_authorization_request');
+        if (sessionId) {
+            localStorage.removeItem(`${sessionId}_appauth_authorization_request`);
+            localStorage.removeItem(`${sessionId}_appauth_authorization_service_configuration`);
+            localStorage.removeItem('appauth_current_authorization_request');
+        }
+
+        this.removeHostPrefixedCookie("__Host-umbAccessToken");
 
         // And as we expect the call to sign the user in has already happened,
         // we boot the user back to the root of the app which will retrigger
         // the front-end (back office) authentication flow
         window.location.href = "/umbraco/";
+    }
+
+    removeHostPrefixedCookie(name: string): void {
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure;`;
     }
 
     endImpersonationClick() {

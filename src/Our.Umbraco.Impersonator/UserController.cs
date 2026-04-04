@@ -120,6 +120,9 @@ namespace Our.Umbraco.Impersonator
 
             var user = _umbracoMapper.Map<BackOfficeIdentityUser>(userById);
 
+            // We have a bunch of auth cookies that contain user info, clear them out (17.3)
+            RemoveAuthCookies();
+
             // Remove the impersonation session data
             HttpContext.Session.Remove(IMPERSONATOR_USER_ID);
 
@@ -152,7 +155,11 @@ namespace Our.Umbraco.Impersonator
                 return NotFound("userNotFound");
             }
 
+
             var user = _umbracoMapper.Map<BackOfficeIdentityUser>(userById);
+
+            // We have a bunch of auth cookies that contain user info, clear them out (17.3)
+            RemoveAuthCookies();
 
             // Store the impersonation info BEFORE signing in
             HttpContext.Session.SetString(IMPERSONATOR_USER_ID,
@@ -166,6 +173,35 @@ namespace Our.Umbraco.Impersonator
 
             // Return success - the frontend will handle the OAuth flow
             return Ok("success");
+        }
+
+        private void RemoveAuthCookies()
+        {
+            Response.Cookies.Delete("__Host-umbAccessToken", new CookieOptions
+            {
+                Path = "/",
+                Secure = true
+            });
+            Response.Cookies.Delete("__Host-umbRefreshToken", new CookieOptions
+            {
+                Path = "/",
+                Secure = true
+            });
+            //Response.Cookies.Delete("UMB_SESSION", new CookieOptions
+            //{
+            //    Path = "/",
+            //    Secure = true
+            //});
+            Response.Cookies.Delete("UMB_UCONTEXT", new CookieOptions
+            {
+                Path = "/",
+                Secure = true
+            });
+            Response.Cookies.Delete("UMB_UCONTEXT_EXPOSED", new CookieOptions
+            {
+                Path = "/",
+                Secure = true
+            });
         }
     }
 }

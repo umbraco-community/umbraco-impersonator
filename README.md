@@ -14,23 +14,7 @@ This is useful in cases where you need to check the permissions of editors and o
 
 When Impersonator is installed, and you are logged in as a user with access to the Users section in Umbraco, you can click your avatar in the upper right corner to impersonate another user.
 
-![Impersonate a user from the user dialog](docs/impersonate-user.png)
-
 When impersonating another user, the user dialog is used to end impersonation.
-
-![Impersonating a user from the user dialog](docs/impersonating-user.png)
-
-## Getting started
-
-### Installation
-
-Impersonator can be installed in Umbraco 10 using the dotnet cli by running the following command:
-
-```
-dotnet add package Our.Umbraco.Impersonator
-```
-
----
 
 ## Contributing to this project
 
@@ -44,11 +28,12 @@ Anyone and everyone is welcome to contribute. Please take a moment to review the
 
 Have a question?
 
-- [Raise an issue](https://github.com/skttl/Our.Umbraco.Impersonator/issues) on GitHub
+- [Raise an issue](https://github.com/umbraco-community/umbraco-impersonator/issues) on GitHub
 
 ## Dev Team
 
 - [Søren Kottal](https://github.com/skttl)
+- [Richard Ockerby](https://github.com/rockerby)
 
 ### Special thanks
 
@@ -57,6 +42,6 @@ Have a question?
 
 ## License
 
-Copyright &copy; 2022 Søren Kottal
+Copyright &copy; 2026 Community Package Team
 
 Licensed under the [MIT License](LICENSE.md)

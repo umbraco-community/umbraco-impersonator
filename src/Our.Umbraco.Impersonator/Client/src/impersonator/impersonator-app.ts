@@ -126,7 +126,10 @@ export class ImpersonatorApp extends UmbElementMixin(LitElement) {
     impersonateUserClick() {
 
         let t = this;
-
+        if(this.userToImpersonate === '') {
+            alert("Please select a user to impersonate");
+            return;
+        }
         impersonate({ query: { id: this.userToImpersonate } }).then(function (response) {
             if (response.data == "success") {
                 // Clear cached OAuth tokens so the frontend requests new ones for the impersonated user

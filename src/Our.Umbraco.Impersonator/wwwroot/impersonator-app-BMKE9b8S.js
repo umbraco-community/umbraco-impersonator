@@ -280,7 +280,7 @@ S.elementStyles = [], S.shadowRootOptions = { mode: "open" }, S[x("elementProper
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const O = globalThis, Q = (r) => r, L = O.trustedTypes, X = L ? L.createPolicy("lit-html", { createHTML: (r) => r }) : void 0, ht = "$lit$", f = `lit$${Math.random().toFixed(9).slice(2)}$`, lt = "?" + f, St = `<${lt}>`, E = document, T = () => E.createComment(""), I = (r) => r === null || typeof r != "object" && typeof r != "function", J = Array.isArray, wt = (r) => J(r) || typeof (r == null ? void 0 : r[Symbol.iterator]) == "function", B = `[ 	
+const O = globalThis, Q = (r) => r, L = O.trustedTypes, X = L ? L.createPolicy("lit-html", { createHTML: (r) => r }) : void 0, ht = "$lit$", f = `lit$${Math.random().toFixed(9).slice(2)}$`, lt = "?" + f, St = `<${lt}>`, E = document, H = () => E.createComment(""), I = (r) => r === null || typeof r != "object" && typeof r != "function", J = Array.isArray, wt = (r) => J(r) || typeof (r == null ? void 0 : r[Symbol.iterator]) == "function", B = `[ 	
 \f\r]`, P = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, tt = /-->/g, et = />/g, A = RegExp(`>|${B}(?:([^\\s"'>=/]+)(${B}*=${B}*(?:[^ 	
 \f\r"'\`<>=]|("|')|))|$)`, "g"), st = /'/g, it = /"/g, ct = /^(?:script|style|textarea|title)$/i, Ct = (r) => (t, ...e) => ({ _$litType$: r, strings: t, values: e }), d = Ct(1), w = Symbol.for("lit-noChange"), p = Symbol.for("lit-nothing"), rt = /* @__PURE__ */ new WeakMap(), y = E.createTreeWalker(E, 129);
 function pt(r, t) {
@@ -313,14 +313,14 @@ class N {
       if (i.nodeType === 1) {
         if (i.hasAttributes()) for (const l of i.getAttributeNames()) if (l.endsWith(ht)) {
           const m = u[n++], _ = i.getAttribute(l).split(f), M = /([.?@])?(.*)/.exec(m);
-          a.push({ type: 1, index: o, name: M[2], strings: _, ctor: M[1] === "." ? xt : M[1] === "?" ? Ot : M[1] === "@" ? Ht : z }), i.removeAttribute(l);
+          a.push({ type: 1, index: o, name: M[2], strings: _, ctor: M[1] === "." ? xt : M[1] === "?" ? Ot : M[1] === "@" ? Tt : z }), i.removeAttribute(l);
         } else l.startsWith(f) && (a.push({ type: 6, index: o }), i.removeAttribute(l));
         if (ct.test(i.tagName)) {
           const l = i.textContent.split(f), m = l.length - 1;
           if (m > 0) {
             i.textContent = L ? L.emptyScript : "";
-            for (let _ = 0; _ < m; _++) i.append(l[_], T()), y.nextNode(), a.push({ type: 2, index: ++o });
-            i.append(l[m], T());
+            for (let _ = 0; _ < m; _++) i.append(l[_], H()), y.nextNode(), a.push({ type: 2, index: ++o });
+            i.append(l[m], H());
           }
         }
       } else if (i.nodeType === 8) if (i.data === lt) a.push({ type: 2, index: o });
@@ -360,7 +360,7 @@ class Pt {
     for (; a !== void 0; ) {
       if (n === a.index) {
         let c;
-        a.type === 2 ? c = new R(o, o.nextSibling, this, t) : a.type === 1 ? c = new a.ctor(o, a.name, a.strings, this, t) : a.type === 6 && (c = new Tt(o, this, t)), this._$AV.push(c), a = s[++h];
+        a.type === 2 ? c = new R(o, o.nextSibling, this, t) : a.type === 1 ? c = new a.ctor(o, a.name, a.strings, this, t) : a.type === 6 && (c = new Ht(o, this, t)), this._$AV.push(c), a = s[++h];
       }
       n !== (a == null ? void 0 : a.index) && (o = y.nextNode(), n++);
     }
@@ -419,7 +419,7 @@ class R {
     J(this._$AH) || (this._$AH = [], this._$AR());
     const e = this._$AH;
     let s, i = 0;
-    for (const o of t) i === e.length ? e.push(s = new R(this.O(T()), this.O(T()), this, this.options)) : s = e[i], s._$AI(o), i++;
+    for (const o of t) i === e.length ? e.push(s = new R(this.O(H()), this.O(H()), this, this.options)) : s = e[i], s._$AI(o), i++;
     i < e.length && (this._$AR(s && s._$AB.nextSibling, i), e.length = i);
   }
   _$AR(t = this._$AA.nextSibling, e) {
@@ -475,7 +475,7 @@ class Ot extends z {
     this.element.toggleAttribute(this.name, !!t && t !== p);
   }
 }
-class Ht extends z {
+class Tt extends z {
   constructor(t, e, s, i, o) {
     super(t, e, s, i, o), this.type = 5;
   }
@@ -489,7 +489,7 @@ class Ht extends z {
     typeof this._$AH == "function" ? this._$AH.call(((e = this.options) == null ? void 0 : e.host) ?? this.element, t) : this._$AH.handleEvent(t);
   }
 }
-class Tt {
+class Ht {
   constructor(t, e, s) {
     this.element = t, this.type = 6, this._$AN = void 0, this._$AM = e, this.options = s;
   }
@@ -507,7 +507,7 @@ const It = (r, t, e) => {
   let i = s._$litPart$;
   if (i === void 0) {
     const o = (e == null ? void 0 : e.renderBefore) ?? null;
-    s._$litPart$ = i = new R(t.insertBefore(T(), o), o, void 0, e ?? {});
+    s._$litPart$ = i = new R(t.insertBefore(H(), o), o, void 0, e ?? {});
   }
   return i._$AI(r), i;
 };
@@ -517,7 +517,7 @@ const It = (r, t, e) => {
  * SPDX-License-Identifier: BSD-3-Clause
  */
 const v = globalThis;
-class H extends S {
+class T extends S {
   constructor() {
     super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
   }
@@ -543,9 +543,9 @@ class H extends S {
   }
 }
 var ot;
-H._$litElement$ = !0, H.finalized = !0, (ot = v.litElementHydrateSupport) == null || ot.call(v, { LitElement: H });
+T._$litElement$ = !0, T.finalized = !0, (ot = v.litElementHydrateSupport) == null || ot.call(v, { LitElement: T });
 const W = v.litElementPolyfillSupport;
-W == null || W({ LitElement: H });
+W == null || W({ LitElement: T });
 (v.litElementVersions ?? (v.litElementVersions = [])).push("4.2.2");
 /**
  * @license
@@ -592,7 +592,7 @@ var Dt = Object.defineProperty, zt = Object.getOwnPropertyDescriptor, b = (r, t,
     (n = r[o]) && (i = (s ? n(t, e, i) : n(i)) || i);
   return s && i && Dt(t, e, i), i;
 };
-let $ = class extends ut(H) {
+let $ = class extends ut(T) {
   constructor() {
     super(), this.userOptions = [], this.isImpersonating = !1, this.impersonatingUserName = "", this.isLoading = !0, this.isError = !1, this.show = !1, this.userToImpersonate = "";
   }
@@ -625,6 +625,10 @@ let $ = class extends ut(H) {
   }
   impersonateUserClick() {
     let r = this;
+    if (this.userToImpersonate === "") {
+      alert("Please select a user to impersonate");
+      return;
+    }
     Lt({ query: { id: this.userToImpersonate } }).then(function(t) {
       t.data == "success" ? r.triggerLoginAuthFlow() : alert("ERROR with impersonation " + t.data);
     });
@@ -692,4 +696,4 @@ export {
   $ as ImpersonatorApp,
   Ft as default
 };
-//# sourceMappingURL=impersonator-app-CmWHY9km.js.map
+//# sourceMappingURL=impersonator-app-BMKE9b8S.js.map

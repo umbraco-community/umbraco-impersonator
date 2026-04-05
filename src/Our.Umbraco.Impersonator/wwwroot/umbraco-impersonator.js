@@ -3,7 +3,7 @@ const t = [
     type: "userProfileApp",
     alias: "impersonator",
     name: "Impersonator",
-    js: () => import("./impersonator-app-CmWHY9km.js"),
+    js: () => import("./impersonator-app-BMKE9b8S.js"),
     weight: -1,
     meta: {
       label: "Impersonator",

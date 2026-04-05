@@ -1,0 +1,13 @@
+{
+  "$schema": "../umbraco-package-schema.json",
+  "name": "Our.Umbraco.Impersonator",
+  "version": "17.1.0",
+  "extensions": [
+    {
+      "type": "bundle",
+      "alias": "impersonator.bundle",
+      "name": "Impersonator",
+      "js": "/App_Plugins/umbraco-impersonator/umbraco-impersonator.js"
+    }
+  ]
+}

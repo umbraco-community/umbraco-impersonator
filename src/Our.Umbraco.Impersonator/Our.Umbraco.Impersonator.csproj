@@ -1,30 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+	
   <PropertyGroup>
-	  <StaticWebAssetBasePath>App_Plugins/Our.Umbraco.Impersonator</StaticWebAssetBasePath>
-    <TargetFramework>net6.0</TargetFramework>
-    <ContentTargetFolders>.</ContentTargetFolders>
+	<StaticWebAssetBasePath>App_Plugins/umbraco-impersonator</StaticWebAssetBasePath>
+	  <TargetFramework>net10.0</TargetFramework>
+    <!--<ContentTargetFolders>.</ContentTargetFolders>-->
     <Product>Impersonator for Umbraco</Product>
     <PackageId>Our.Umbraco.Impersonator</PackageId>
     <Title>Impersonator for Umbraco</Title>
-    <Authors>Søren Kottal</Authors>
-    <Description>Impersonator for Umbraco 10+ lets administrators impersonate other users</Description>
+    <Description>Impersonator for Umbraco lets administrators impersonate other users</Description>
     <PackageTags>umbraco umbraco-marketplace</PackageTags>
+    <Authors>Community Package Team</Authors>
+    <Copyright>Copyright (c) $([System.DateTime]::UtcNow.ToString(`yyyy`)) Community Package Team</Copyright>
     <PackageIcon>impersonator-icon.png</PackageIcon>
     <PackageReadmeFile>README-nuget.md</PackageReadmeFile>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageProjectUrl>https://github.com/skttl/umbraco-impersonator</PackageProjectUrl>
-		<PackageReleaseNotes>https://github.com/skttl/umbraco-impersonator/blob/main/CHANGELOG.md</PackageReleaseNotes>
-    <Copyright>Copyright (c) 2022 Søren Kottal</Copyright>
+	  <RepositoryType>git</RepositoryType>
+	  <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/umbraco-community/umbraco-impersonator</PackageProjectUrl>
+	<PackageReleaseNotes>https://github.com/umbraco-community/umbraco-impersonator/blob/main/CHANGELOG.md</PackageReleaseNotes>
+    <!--<EnableDefaultContentItems>false</EnableDefaultContentItems>-->
   </PropertyGroup>
+	
 
   <ItemGroup>
-    <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.0.0" />
-    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0" />
+    <PackageReference Include="Umbraco.Cms.Api.Management" Version="17.0.0" />
+    <PackageReference Include="Umbraco.Cms.Core" Version="17.0.0" />
+    <PackageReference Include="Umbraco.Cms.Infrastructure" Version="17.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="17.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="17.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\docs\impersonator-icon.png" Pack="true" PackagePath="\"/>
-    <None Include="..\..\README-nuget.md" Pack="true" PackagePath="\"/>
-    <None Include="..\..\LICENSE.md" Pack="true" PackagePath="\"/>
+    <None Include="..\..\docs\impersonator-icon.png" Pack="true" PackagePath="\" />
+    <None Include="..\..\README-nuget.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>

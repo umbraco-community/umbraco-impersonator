@@ -1,4 +1,9 @@
-Impersonator for Umbraco 10+ lets administrators impersonate other users.
+> [!IMPORTANT]
+> ## Version Compatibility
+> - 2.x is compatible with Umbraco versions 10 through 13.
+> - 3.x is compatible with Umbraco version 17.
+
+Impersonator for Umbraco lets administrators impersonate other users.
 
 This is useful in cases where you need to check the permissions of editors and other users, if you don't know, or don't want to know their passwords.
 
@@ -18,11 +23,12 @@ Anyone and everyone is welcome to contribute. Please take a moment to review the
 
 Have a question?
 
-- [Raise an issue](https://github.com/skttl/Our.Umbraco.Impersonator/issues) on GitHub
+- [Raise an issue](https://github.com/umbraco-community/umbraco-impersonator/issues) on GitHub
 
 ## Dev Team
 
 - [Søren Kottal](https://github.com/skttl)
+- [Richard Ockerby](https://github.com/rockerby)
 
 ### Special thanks
 
@@ -31,6 +37,6 @@ Have a question?
 
 ## License
 
-Copyright &copy; 2022 Søren Kottal
+Copyright &copy; 2026 Community Package Team
 
 Licensed under the [MIT License](LICENSE.md)
